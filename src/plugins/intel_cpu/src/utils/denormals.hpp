@@ -42,7 +42,7 @@ bool denormals_as_zero(bool on) {
     return true;
 }
 #else // OPENVINO_ARCH_X86_64
-    #if defined(__SSE__) || (defined(_M_IX86_FP) && _M_IX86_FP >= 1)
+    #if defined(OPENVINO_ARCH_X86) && (defined(__SSE__) || (defined(_M_IX86_FP) && _M_IX86_FP >= 1))
         bool flush_to_zero(bool on) {
             unsigned int mxcsr = _mm_getcsr();
             if (on) {
