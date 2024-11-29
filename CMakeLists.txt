@@ -66,6 +66,8 @@ if(APPLE AND CMAKE_OSX_DEPLOYMENT_TARGET AND
 endif()
 
 # resolving dependencies for the project
+message (STATUS "ARM ......................... " ${ARM})
+message (STATUS "AARCH64 ......................... " ${AARCH64})
 message (STATUS "CMAKE_VERSION ......................... " ${CMAKE_VERSION})
 message (STATUS "CMAKE_CROSSCOMPILING .................. " ${CMAKE_CROSSCOMPILING})
 message (STATUS "OpenVINO_SOURCE_DIR ................... " ${OpenVINO_SOURCE_DIR})

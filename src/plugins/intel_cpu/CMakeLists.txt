@@ -130,17 +130,21 @@ endif()
 set(OV_CPU_ARM_TARGET_ARCH ${OV_CPU_ARM_TARGET_ARCH_DEFAULT} CACHE STRING "Architecture for ARM ComputeLibrary")
 set_property(CACHE OV_CPU_ARM_TARGET_ARCH PROPERTY STRINGS ${OV_CPU_ARM_TARGET_ARCHS})
 
-if(X86 OR X86_64 OR AARCH64)
-    # disable mlas with webassembly and intel compiler on windows
-    if(EMSCRIPTEN OR (WIN32 AND AARCH64) OR MINGW OR
+
+if (NOT DEFINED ENABLE_MLAS_FOR_CPU_DEFAULT)
+    if(X86 OR X86_64 OR AARCH64)
+        # disable mlas with webassembly and intel compiler on windows
+        if(EMSCRIPTEN OR (WIN32 AND AARCH64) OR MINGW OR
        (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7) OR (OV_COMPILER_IS_INTEL_LLVM AND WIN32))
-        set(ENABLE_MLAS_FOR_CPU_DEFAULT OFF)
+            set(ENABLE_MLAS_FOR_CPU_DEFAULT OFF)
+        else()
+            set(ENABLE_MLAS_FOR_CPU_DEFAULT ON)
+        endif()
     else()
-        set(ENABLE_MLAS_FOR_CPU_DEFAULT ON)
+        set(ENABLE_MLAS_FOR_CPU_DEFAULT OFF)
     endif()
-else()
-    set(ENABLE_MLAS_FOR_CPU_DEFAULT OFF)
 endif()
+
 ov_option(ENABLE_MLAS_FOR_CPU "Enable MLAS for OpenVINO CPU Plugin" ${ENABLE_MLAS_FOR_CPU_DEFAULT})
 
 if(RISCV64_XUANTIE)

@@ -4,6 +4,10 @@
 
 add_definitions(-DIN_OV_COMPONENT)
 
+if(DEFINED OPENVINO_ARCH)
+    add_definitions(-DOPENVINO_ARCH_${OPENVINO_ARCH})
+endif()
+
 if(CMAKE_COMPILER_IS_GNUCXX OR OV_COMPILER_IS_CLANG)
     ov_add_compiler_flags(-Wmissing-declarations)
 endif()
