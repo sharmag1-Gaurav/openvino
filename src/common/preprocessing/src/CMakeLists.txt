@@ -74,7 +74,6 @@ if(ENABLE_AVX512F AND NOT GNU_5_DEBUG_CASE)
     add_definitions(-DHAVE_AVX512=1)
 endif()
 
-# MY_LOG
 if(ENABLE_NEON AND (ARM OR AARCH64))
     ov_arm_neon_optimization_flags(neon_flags)
 
