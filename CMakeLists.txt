@@ -45,8 +45,6 @@ if(ENABLE_COVERAGE)
 endif()
 
 # resolving dependencies for the project
-message (STATUS "ARM ......................... " ${ARM})
-message (STATUS "AARCH64 ......................... " ${AARCH64})
 message (STATUS "CMAKE_VERSION ......................... " ${CMAKE_VERSION})
 message (STATUS "OpenVINO_SOURCE_DIR ................... " ${OpenVINO_SOURCE_DIR})
 message (STATUS "OpenVINO_BINARY_DIR ................... " ${OpenVINO_BINARY_DIR})
