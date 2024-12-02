@@ -20,7 +20,7 @@
 #include "common.hpp"
 #include "softmax_kernel.hpp"
 
-#if defined(OPENVINO_ARCH_ARM64)
+#if defined(OV_CPU_WITH_NEON)
 #    include <arm_neon.h>
 #endif
 
@@ -58,7 +58,7 @@ void cvt_copy(TA* dst, TB* src, size_t n) {
         auto vb = mm256_uni_loadu_ps(src + i);
         mm256_uni_storeu_ps(dst + i, vb);
     }
-#elif defined(OPENVINO_ARCH_ARM64)
+#elif defined(OV_CPU_WITH_NEON)
     if (std::is_same<TA, float>::value && std::is_same<TB, float>::value) {
         for (; i + vec_len_f32_neon <= n; i += vec_len_f32_neon) {
             float32x4_t vb1 = __vld1q_f32(src + i);
@@ -98,7 +98,7 @@ static void attn_acc_value(float* out, float weight, T* v, size_t S, float* scal
         v_out = _mm256_fmadd_ps(attn_w_vec_fp32, v_value, v_out);
         mm256_uni_storeu_ps(out + i, v_out);
     }
-#elif defined(OPENVINO_ARCH_ARM64)
+#elif defined(OV_CPU_WITH_NEON)
     float32x4_t attn_w_vec_fp32 = vdupq_n_f32(weight);
     for (; i + vec_len_f32_neon <= S; i += vec_len_f32_neon) {
         float32x4_t v_value = __vld1q_f32(v + i);
@@ -356,7 +356,7 @@ static float sum_q_head(T* a, size_t n) {
     vsum0 = _mm256_add_ps(vsum0, vsum2);
     hsum(vsum0);
     sum = _mm256_cvtss_f32(vsum0);
-#elif defined(OPENVINO_ARCH_ARM64)
+#elif defined(OV_CPU_WITH_NEON)
     size_t vec_len_f32_neon = 4;
     float32x4_t vsum0 = vdupq_n_f32(0.0f);
     float32x4_t vsum1 = vdupq_n_f32(0.0f);
@@ -496,7 +496,7 @@ static float dot_product(TA* a, TB* b, size_t n, float* scale, float* zp, float*
     hsum(vsum0);
     sum = _mm256_cvtss_f32(vsum0);
 
-#elif defined(OPENVINO_ARCH_ARM64)
+#elif defined(OV_CPU_WITH_NEON)
     float32x4_t vsum0 = vdupq_n_f32(0.0f);
     float32x4_t vsum1 = vdupq_n_f32(0.0f);
     float32x4_t vsum2 = vdupq_n_f32(0.0f);
@@ -789,7 +789,7 @@ static void attn_reduce(T* dst, float* temp, size_t M, size_t S, size_t temp_str
         }
         mm256_uni_storeu_ps(dst + i, result_vec_fp32);
     }
-#elif defined(OPENVINO_ARCH_ARM64)
+#elif defined(OV_CPU_WITH_NEON)
     for (; i + vec_len_f32_neon <= S; i += vec_len_f32_neon) {
         auto* src = temp + i;
         auto result_vec_fp32 = vdupq_n_f32(0.0f);

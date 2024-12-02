@@ -11,7 +11,7 @@
 #include <cstdint>
 #include <vector>
 
-#if defined(OPENVINO_ARCH_ARM64)
+#if defined(OV_CPU_WITH_NEON)
 #include "arm_neon.h"
 #endif
 
@@ -385,7 +385,7 @@ inline void scale_add2_reduce_max(float* a,
     v_max0 = _mm256_max_ps(v_max0, v_max2);
     hmax(v_max0);
     max = _mm256_cvtss_f32(v_max0);
-#elif defined(OPENVINO_ARCH_ARM64)
+#elif defined(OV_CPU_WITH_NEON)
     auto v_max = vdupq_n_f32(std::numeric_limits<float>::lowest());
     auto v_scale = vdupq_n_f32(scale);
     auto v_nfltmax = vdupq_n_f32(-FLT_MAX);
@@ -655,7 +655,7 @@ inline void exp_reduce_sum(float* a, const float max, const size_t size, float& 
     }
     hsum(v_sum);
     sum = _mm256_cvtss_f32(v_sum);
-#elif defined(OPENVINO_ARCH_ARM64)
+#elif defined(OV_CPU_WITH_NEON)
     float32x4_t v_a;
     float32x4_t v_max = vdupq_n_f32(max);
     float32x4_t v_sum = vdupq_n_f32(0.0f);
@@ -677,7 +677,7 @@ inline void exp_reduce_sum(float* a, const float max, const size_t size, float& 
     }
 }
 
-#if defined(OPENVINO_ARCH_ARM64)
+#if defined(OV_CPU_WITH_NEON)
 inline void exp_reduce_sum_f32(ov::float16* a, const ov::float16 max, const size_t size, ov::float16& sum) {
     float32x4_t v_a;
     float32x4_t v_max = vdupq_n_f32(static_cast<float>(max));
@@ -779,7 +779,7 @@ inline void multiply_scalar(float* a, float* a_dst, const float val, const size_
 
         i += (size - i);
     }
-#elif defined(OPENVINO_ARCH_ARM64)
+#elif defined(OV_CPU_WITH_NEON)
     float32x4_t v_scale = vdupq_n_f32(val);
     while (i + vec_len_f32_neon <= size) {
         float32x4_t v_a = vld1q_f32(a + i);
@@ -819,7 +819,7 @@ inline void multiply_scalar(float* a, T* a_dst, const float val, const size_t si
     }
 #endif
 }
-#if defined(OPENVINO_ARCH_ARM64)
+#if defined(OV_CPU_WITH_NEON)
 inline void multiply_scalar(ov::float16* a, float* a_dst, const ov::float16 val, const size_t size) {
     float16x4_t v_a_f16;
     float32x4_t v_a, v_res;

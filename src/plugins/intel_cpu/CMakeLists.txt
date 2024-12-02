@@ -179,7 +179,12 @@ if(DNNL_USE_ACL)
     set(OV_CPU_WITH_ACL ON)
 endif()
 
-if(OV_CPU_WITH_ACL)
+if(ENABLE_NEON_FP16)
+    add_definitions(-DOV_CPU_WITH_NEON)
+endif()
+
+# C++ 14 Needed for make_unique used in src/plugins/intel_cpu/src/emitters/plugin/aarch64/jit_eltwise_emitters.cpp
+if(AARCH64)
     set(CMAKE_CXX_STANDARD 14)
 endif()
 

@@ -12,7 +12,7 @@
 #include "openvino/core/type/bfloat16.hpp"
 #include "openvino/core/type/float16.hpp"
 
-#if defined(OPENVINO_ARCH_ARM64)
+#if defined(OV_CPU_WITH_NEON)
 #include "arm_neon.h"
 #endif
 
@@ -245,7 +245,7 @@ static constexpr size_t vec_len_f16_neon = vec_len_neon / sizeof(ov::float16);
     }
 #endif
 
-#ifdef OPENVINO_ARCH_ARM64
+#ifdef OV_CPU_WITH_NEON
     inline float32x4_t exp_ps_neon_f32(const float32x4_t& src) {
         const auto c1 = vreinterpretq_f32_u32(vdupq_n_u32(0x3f7ffff6));
         const auto c2 = vreinterpretq_f32_u32(vdupq_n_u32(0x3efffedb));
