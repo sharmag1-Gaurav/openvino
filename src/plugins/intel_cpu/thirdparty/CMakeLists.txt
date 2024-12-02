@@ -56,7 +56,7 @@ function(ov_add_onednn)
         set(DNNL_VERBOSE ON CACHE STRING "" FORCE)
     endif()
 
-    message (STATUS "MY_LOG DNNL_TARGET_ARCH ......................... " ${DNNL_TARGET_ARCH})
+    # Allow specifying DNNL_TARGET_ARCH for ARM plugin compile for x86
     if(NOT DEFINED DNNL_TARGET_ARCH)
         if(X86_64)
             set(DNNL_TARGET_ARCH "X64" CACHE STRING "" FORCE)
@@ -72,7 +72,7 @@ function(ov_add_onednn)
             message(FATAL_ERROR "Unsupported system processor ${CMAKE_SYSTEM_PROCESSOR}")
         endif()
     endif()
-    
+
     if(DNNL_TARGET_ARCH STREQUAL "AARCH64" OR DNNL_TARGET_ARCH STREQUAL "ARM")
         set(DNNL_USE_ACL ON CACHE BOOL "Use ARM Compute Library kernels in oneDNN" FORCE)
     endif()

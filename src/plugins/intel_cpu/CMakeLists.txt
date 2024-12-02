@@ -130,7 +130,7 @@ endif()
 set(OV_CPU_ARM_TARGET_ARCH ${OV_CPU_ARM_TARGET_ARCH_DEFAULT} CACHE STRING "Architecture for ARM ComputeLibrary")
 set_property(CACHE OV_CPU_ARM_TARGET_ARCH PROPERTY STRINGS ${OV_CPU_ARM_TARGET_ARCHS})
 
-
+# Allow disabling MLAS for ARM plugin compile for x86
 if (NOT DEFINED ENABLE_MLAS_FOR_CPU_DEFAULT)
     if(X86 OR X86_64 OR AARCH64)
         # disable mlas with webassembly and intel compiler on windows

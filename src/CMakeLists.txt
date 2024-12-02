@@ -4,6 +4,7 @@
 
 add_definitions(-DIN_OV_COMPONENT)
 
+# Allow specifying OPENVINO_ARCH for ARM plugin compile for x86
 if(DEFINED OPENVINO_ARCH)
     add_definitions(-DOPENVINO_ARCH_${OPENVINO_ARCH})
 endif()

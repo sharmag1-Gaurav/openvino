@@ -66,7 +66,7 @@
 #    define OPENVINO_ARCH_RISCV64
 #endif
 #endif // defined(OPENVINO_ARCH_ARM) + ... == 0
- 
+
 #if defined(OPENVINO_ARCH_ARM) + defined(OPENVINO_ARCH_ARM64) + defined(OPENVINO_ARCH_X86) \
                 + defined(OPENVINO_ARCH_X86_64) + defined(OPENVINO_ARCH_RISCV64) \
         != 1
